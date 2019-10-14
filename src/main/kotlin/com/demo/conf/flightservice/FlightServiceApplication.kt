@@ -1,7 +1,5 @@
 package com.demo.conf.flightservice
 
-import com.google.common.base.Predicates
-import com.google.common.base.Predicates.and
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -65,11 +63,8 @@ class SwaggerConfig {
         return Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(and(
-                        Predicates.not(PathSelectors.regex("/error")),
-                        Predicates.not(PathSelectors.regex("/actuator"))
-                ))
+                .apis(RequestHandlerSelectors.basePackage("com.demo.conf.flightservice"))
+                .paths(PathSelectors.ant("/flight-service/**"))
                 .build()
     }
 
