@@ -1,17 +1,25 @@
 package com.demo.conf.flightservice
 
+import com.google.common.base.Predicates
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.repository.CrudRepository
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
+import springfox.documentation.service.ApiInfo
+import springfox.documentation.service.Contact
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
@@ -45,14 +53,24 @@ class SwaggerConfig {
 	@Bean
 	fun api(): Docket {
 		return Docket(DocumentationType.SWAGGER_2)
+				.apiInfo(apiInfo())
 				.select()
 				.apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any())
+				.paths(Predicates.not(PathSelectors.regex("/error")))
 				.build()
 	}
+
+	fun apiInfo(): ApiInfo {
+		return ApiInfo(
+				"Flight-Service API",
+				"Elementary booking API",
+				"Flight-Service TOS", //TODO update version
+				"Personal demonstration only",
+				Contact("Paul Newman", "https://paul.newman", "paul@newman.com"),
+				"MIT License","https://mit-license.org/", emptyList()
+		)
+	}
 }
-
-
 
 @RestController
 @RequestMapping("/flight-service")
@@ -79,15 +97,12 @@ class FlightServiceController (val flightRepository: FlightRepository,
 @Component
 class BookingService(val bookingRepository: BookingRepository) {
 
-
-
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(fixedRate = 3000)
 	fun bookWorker() {
-		println("==== BookWorker =====")
+		println("==== BookingWorker =====")
 
 		bookingRepository.findAll()
 				.filter { it.status == "PENDING" }
-				.map { Thread.sleep(5000); it } // Long "treatment"
 				.forEach {
 					if (it.price.airlines == "BA") it.status = "FAILED" else it.status = "SUCCESS"
 					bookingRepository.save(it)
