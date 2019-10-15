@@ -32,3 +32,6 @@ build/
 
 # Dependency directories
 node_modules/
+
+# Serverless framework
+.serverless
