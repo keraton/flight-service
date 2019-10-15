@@ -1,0 +1,13 @@
+version: '3'
+services:
+  jenkins:
+    build: 
+      context: .
+    ports:
+      - '8080:8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_data:/var/jenkins_home
+      - ${PROJECT_VOLUME:-.}:/home/project
+volumes: 
+  jenkins_data:
