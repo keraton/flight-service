@@ -6,6 +6,7 @@
   "scripts": {
     "test": "newman -h",
     "local": "newman run collections/flight-service-workflow.postman_collection.json -e environments/localhost.postman_environment.json -r cli,html,junit --reporter-html-export ./newman/report.html --reporter-junit-export ./newman/report.xml"
+    "gcp": "newman run collections/flight-service-workflow.postman_collection.json -e environments/gcp.postman_environment.json -r cli,html,junit --reporter-html-export ./newman/report.html --reporter-junit-export ./newman/report.xml"
   },
   "author": "",
   "license": "ISC",
