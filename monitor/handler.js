@@ -7,15 +7,24 @@ const markdowntable = require('markdown-table');
 const prettyms = require('pretty-ms');
 
 module.exports.hello = (event, context, callback) => {
+  const globals = {
+    "id": "edae90c1-c3e5-468d-802e-fb34b9b0d750",
+      "name": "service-auth",
+      "values": [
+        {
+          "key": "password",
+          "value": process.env.APP_PWD,
+          "enabled": true
+        }
+      ]
+  };
+
   const options = {
     collection: path.join(__dirname, 'collections/flight-service-monitor.postman_collection.json'),
     environment: path.join(__dirname, 'environments/gcp.postman_environment.json'),
+    globals: globals,
     reporters: 'cli'
-  }
-
-  // const url = 'https://hooks.slack.com/services/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';
-  const url = event['queryStringParameters']['slackUrl'];
-  const webhook = new IncomingWebhook(url);
+  };
 
   newman.run(options).on('start', () => {
     console.log('newman run started');
@@ -27,21 +36,25 @@ module.exports.hello = (event, context, callback) => {
         body: JSON.stringify({
           message: 'Newman test run encountered an error.'
         })
-      }
+      };
       callback(response_error, null);
     } else {
+      const url = process.env.SLACK_URL;
+      const webhook = new IncomingWebhook(url);
       const slack_message = buildSlackTable(summary);
+      console.log(slack_message);
       webhook.send({
         text: slack_message,
         username: "Paul",
         icon_emoji: ":newman:"
       });
+
       const response_success = {
         statusCode: 200,
         body: JSON.stringify({
           message: `Newman run done. ${summary.run.stats.tests.total} tests run with ${summary.run.failures.length} failures`
         })
-      }
+      };
       if (summary.run.failures.length > 0) {
         callback(null, response_success);
       } else {
@@ -54,14 +67,11 @@ module.exports.hello = (event, context, callback) => {
 function buildSlackTable(summary) {
   const backticks = '```';
   const run = summary.run;
-  let data = []
-  let title;
+  let data = [];
   let header = '';
-  if (!title) {
-      title = summary.collection.name;
-      if (summary.environment.name) {
-          title += ' - ' + summary.environment.name
-      }
+  let title = summary.collection.name;
+  if (summary.environment.name) {
+    title += ' - ' + summary.environment.name
   }
   const headers = [header, 'total', 'failed'];
   const arr = ['iterations', 'requests', 'testScripts', 'prerequestScripts', 'assertions'];

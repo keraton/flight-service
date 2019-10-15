@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "af9a650c-9fd3-4f7d-83e6-f9aba10b32fd",
-		"name": "flight-service monitor",
+		"name": "flight-service-monitor",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -30,19 +30,34 @@
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/flight-service/search",
+					"raw": "{{baseUrl}}/flight-service/search?arrivalTime={{arrivalTime}}&departureTime={{departureTime}}&destination={{destination}}&origin={{origin}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"flight-service",
 						"search"
+					],
+					"query": [
+						{
+							"key": "arrivalTime",
+							"value": "{{arrivalTime}}"
+						},
+						{
+							"key": "departureTime",
+							"value": "{{departureTime}}"
+						},
+						{
+							"key": "destination",
+							"value": "{{destination}}"
+						},
+						{
+							"key": "origin",
+							"value": "{{origin}}"
+						}
 					]
 				}
 			},
@@ -183,9 +198,6 @@
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -325,6 +337,43 @@
 					"body": ""
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "be4d80d9-bc6d-4919-80ac-341c39026de1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7c88b507-4364-4e05-adcf-f79a058ec9d6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"protocolProfileBehavior": {}
