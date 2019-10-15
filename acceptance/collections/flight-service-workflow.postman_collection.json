@@ -1,0 +1,799 @@
+{
+	"info": {
+		"_postman_id": "1dc420bc-6ac0-4d21-ac8e-a029104274aa",
+		"name": "flight-service-workflow",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "06d63164-35f0-4a33-a706-f83dc27d540d",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"var flightNumber = jsonData[0].flightNumber;",
+							"pm.environment.set(\"flightNumber\", flightNumber);",
+							"",
+							"pm.test('Response is ok', () => {",
+							"    pm.response.to.be.ok;",
+							"});",
+							"",
+							"pm.test('Check flight-service provides 3 flights', () => {",
+							"    pm.expect(pm.response.json().length).to.be.equal(3);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/flight-service/search?arrivalTime={{arrivalTime}}&departureTime={{departureTime}}&destination={{destination}}&origin={{origin}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"flight-service",
+						"search"
+					],
+					"query": [
+						{
+							"key": "arrivalTime",
+							"value": "{{arrivalTime}}"
+						},
+						{
+							"key": "departureTime",
+							"value": "{{departureTime}}"
+						},
+						{
+							"key": "destination",
+							"value": "{{destination}}"
+						},
+						{
+							"key": "origin",
+							"value": "{{origin}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"search"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"search"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "*/*"
+						}
+					],
+					"cookie": [],
+					"body": "<object>"
+				},
+				{
+					"name": "Forbidden",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"search"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"search"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "price",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0730e654-c1f2-426d-853a-224baf9a7ea5",
+						"exec": [
+							"pm.test('response has right pricing', () => {",
+							"    const flightNumber = pm.environment.get(\"flightNumber\");",
+							"    pm.expect(pm.response.json().flightNumber).to.be.equal(flightNumber);",
+							"    ",
+							"    pm.environment.set(\"pricing\", pm.response.text());",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/flight-service/price/:flightNumber",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"flight-service",
+						"price",
+						":flightNumber"
+					],
+					"variable": [
+						{
+							"key": "flightNumber",
+							"value": "{{flightNumber}}",
+							"description": "flightNumber"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/price/<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"price",
+								"<string>"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/price/<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"price",
+								"<string>"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "*/*"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/price/<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"price",
+								"<string>"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Forbidden",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/price/<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"price",
+								"<string>"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "book",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "73586bf0-9b5a-4199-8321-382e930d3885",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4aa2dd7-7449-4c6e-86bd-c67fd1b6d971",
+						"exec": [
+							"pm.test('booking submitted', () => {",
+							"    const flightNumber = pm.environment.get(\"flightNumber\");",
+							"    pm.expect(pm.response.json().price.flightNumber).to.be.equal(flightNumber);",
+							"    ",
+							"    pm.environment.set(\"maxRetry\", 4);",
+							"    pm.environment.set(\"id\", pm.response.json().id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{pricing}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/flight-service/booking",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"flight-service",
+						"booking"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"airlines\": \"<string>\",\n    \"base\": \"<double>\",\n    \"flightNumber\": \"<string>\",\n    \"tax\": \"<double>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "*/*"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Forbidden",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"airlines\": \"<string>\",\n    \"base\": \"<double>\",\n    \"flightNumber\": \"<string>\",\n    \"tax\": \"<double>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"airlines\": \"<string>\",\n    \"base\": \"<double>\",\n    \"flightNumber\": \"<string>\",\n    \"tax\": \"<double>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"airlines\": \"<string>\",\n    \"base\": \"<double>\",\n    \"flightNumber\": \"<string>\",\n    \"tax\": \"<double>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"airlines\": \"<string>\",\n    \"base\": \"<double>\",\n    \"flightNumber\": \"<string>\",\n    \"tax\": \"<double>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "getBooking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1da62e0f-254e-48a8-ad2f-fc99d86c98c8",
+						"exec": [
+							"var bookingStatus = pm.response.json().status;",
+							"var maxRetry = pm.environment.get(\"maxRetry\");",
+							"if (bookingStatus === 'SUCCESS') {",
+							"    console.log('booking successful');",
+							"    pm.test('booking success', () => {",
+							"        const flightNumber = pm.environment.get(\"flightNumber\");",
+							"        pm.expect(pm.response.json().price.flightNumber).to.be.equal(flightNumber);",
+							"    });",
+							"} else if (maxRetry > 0) {",
+							"    pm.environment.set(\"maxRetry\", maxRetry - 1);",
+							"    setTimeout(() => {",
+							"        console.log(pm.response.json());",
+							"        postman.setNextRequest('getBooking');",
+							"    }, 1000);",
+							"} else {",
+							"    pm.test('booking success', () => {",
+							"        pm.expect.fail(`Booking ${bookingStatus} after maxRetry`);",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/flight-service/booking/:bookingId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"flight-service",
+						"booking",
+						":bookingId"
+					],
+					"variable": [
+						{
+							"key": "bookingId",
+							"value": "{{id}}",
+							"description": "bookingId"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Forbidden",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking/<long>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking",
+								"<long>"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking/<long>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking",
+								"<long>"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "*/*"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking/<long>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking",
+								"<long>"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/flight-service/booking/<long>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"flight-service",
+								"booking",
+								"<long>"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "39bc2223-136c-4dbd-adc9-1f46cfad12b3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "efa90db0-e9fa-43e6-a5a1-eb360e37d2ba",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

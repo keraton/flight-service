@@ -1,0 +1,16 @@
+{
+  "name": "flight-service-acceptance",
+  "version": "1.0.0",
+  "description": "Acceptance tests for flight-service",
+  "main": "index.js",
+  "scripts": {
+    "test": "newman -h",
+    "local": "newman run collections/flight-service-workflow.postman_collection.json -e environments/localhost.postman_environment.json -r cli,html,junit --reporter-html-export ./newman/report.html --reporter-junit-export ./newman/report.xml"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "newman": "^4.5.5",
+    "newman-reporter-html": "^1.0.3"
+  }
+}

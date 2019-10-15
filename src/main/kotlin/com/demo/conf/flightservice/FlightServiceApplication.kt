@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.data.repository.CrudRepository
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -77,6 +80,15 @@ class SwaggerConfig {
                 Contact("Paul Newman", "https://paul.newman", "paul@newman.com"),
                 "MIT License", "https://mit-license.org/", emptyList()
         )
+    }
+}
+
+@Configuration
+@EnableWebSecurity
+class CustomSecurityConfig : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        super.configure(http)
+        http.csrf().disable()
     }
 }
 
