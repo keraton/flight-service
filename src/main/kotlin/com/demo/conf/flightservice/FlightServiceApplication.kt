@@ -41,8 +41,12 @@ class FlightServiceApplication {
     fun init(flightRepository: FlightRepository, priceRepository: PriceRepository) = CommandLineRunner {
         // Flights
         flightRepository.save(Flight("AF", "AF001", 200.00, "2019-12-01 08h00", "CDG", "2019-12-01 09h00", "TLS"))
+        flightRepository.save(Flight("AF", "AFX01", 500.00, "2019-12-01 09h30", "ORY", "2019-12-01 11h00", "TLS"))
+        flightRepository.save(Flight("AF", "AFX02", 500.00, "2019-12-01 09h30", "ORY", "2019-12-01 11h00", "TLS"))
         flightRepository.save(Flight("AF", "AF002", 200.00, "2019-12-01 14h00", "CDG", "2019-12-01 15h00", "TLS"))
         flightRepository.save(Flight("BA", "BA001", 500.00, "2019-12-01 18h00", "CDG", "2019-12-01 19h00", "TLS"))
+        flightRepository.save(Flight("DS", "DSX01", 500.00, "2019-12-01 15h30", "ORY", "2019-12-01 17h00", "TLS"))
+        flightRepository.save(Flight("AF", "DSX02", 500.00, "2019-12-01 20h30", "ORY", "2019-12-01 22h00", "TLS"))
 
         // Price
         priceRepository.save(Price("AF", "AF001", 150.00, 50.00))
@@ -99,19 +103,34 @@ class FlightServiceController(val flightRepository: FlightRepository,
                               val bookingRepository: BookingRepository) {
 
     @GetMapping("/search")
-    fun search(@RequestParam origin: String,
-               @RequestParam destination: String,
-               @RequestParam departureTime: String,
-               @RequestParam arrivalTime: String): Iterable<Flight> = flightRepository.findAll()
+    fun search(@RequestParam ori: String,
+               @RequestParam dest: String,
+               @RequestParam dep: String) = flightRepository.findAll()
+                                                                        .map { updateDate(it, dep) }
+                                                                        .toList()
 
     @GetMapping("/price/{flightNumber}")
     fun price(@PathVariable flightNumber: String) = priceRepository.findById(flightNumber)
+
 
     @PostMapping("/booking")
     fun book(@RequestBody price: Price) = bookingRepository.save(Booking(price))
 
     @GetMapping("/booking/{bookingId}")
     fun getBooking(@PathVariable bookingId: Long) = bookingRepository.findById(bookingId)
+
+    private fun updateDate(it: Flight, departureTime: String): Flight {
+        val hourDepart = it.departureTime.split(" ").last()
+        val hourArrive = it.arrivalTime.split(" ").last()
+        return Flight(airlines = it.airlines,
+                flightNumber = it.flightNumber,
+                price = it.price,
+                departureTime = "$departureTime $hourDepart",
+                arrivalTime = "$departureTime $hourArrive",
+                departureLocation = it.departureLocation,
+                arrivalLocation = it.arrivalLocation,
+                id = it.id)
+    }
 
 
 }
