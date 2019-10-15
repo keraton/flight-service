@@ -33,7 +33,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/flight-service/search?arrivalTime={{arrivalTime}}&departureTime={{departureTime}}&destination={{destination}}&origin={{origin}}",
+					"raw": "{{baseUrl}}/flight-service/search?&dep={{dep}}&dest={{dest}}&ori={{ori}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -43,20 +43,16 @@
 					],
 					"query": [
 						{
-							"key": "arrivalTime",
-							"value": "{{arrivalTime}}"
+							"key": "dep",
+							"value": "{{dep}}"
 						},
 						{
-							"key": "departureTime",
-							"value": "{{departureTime}}"
+							"key": "dest",
+							"value": "{{dest}}"
 						},
 						{
-							"key": "destination",
-							"value": "{{destination}}"
-						},
-						{
-							"key": "origin",
-							"value": "{{origin}}"
+							"key": "ori",
+							"value": "{{ori}}"
 						}
 					]
 				}
