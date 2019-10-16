@@ -33,7 +33,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/flight-service/search?arrivalTime={{arrivalTime}}&departureTime={{departureTime}}&destination={{destination}}&origin={{origin}}",
+					"raw": "{{baseUrl}}/flight-service/search?dep={{dep}}&dest={{dest}}&ori={{ori}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -43,138 +43,21 @@
 					],
 					"query": [
 						{
-							"key": "arrivalTime",
-							"value": "{{arrivalTime}}"
+							"key": "dep",
+							"value": "{{dep}}"
 						},
 						{
-							"key": "departureTime",
-							"value": "{{departureTime}}"
+							"key": "dest",
+							"value": "{{dest}}"
 						},
 						{
-							"key": "destination",
-							"value": "{{destination}}"
-						},
-						{
-							"key": "origin",
-							"value": "{{origin}}"
+							"key": "ori",
+							"value": "{{ori}}"
 						}
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "Unauthorized",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/flight-service/search",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"flight-service",
-								"search"
-							]
-						}
-					},
-					"status": "Unauthorized",
-					"code": 401,
-					"_postman_previewlanguage": "text",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "text/plain"
-						}
-					],
-					"cookie": [],
-					"body": ""
-				},
-				{
-					"name": "Not Found",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/flight-service/search",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"flight-service",
-								"search"
-							]
-						}
-					},
-					"status": "Not Found",
-					"code": 404,
-					"_postman_previewlanguage": "text",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "text/plain"
-						}
-					],
-					"cookie": [],
-					"body": ""
-				},
-				{
-					"name": "OK",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/flight-service/search",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"flight-service",
-								"search"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "text",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "*/*"
-						}
-					],
-					"cookie": [],
-					"body": "<object>"
-				},
-				{
-					"name": "Forbidden",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/flight-service/search",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"flight-service",
-								"search"
-							]
-						}
-					},
-					"status": "Forbidden",
-					"code": 403,
-					"_postman_previewlanguage": "text",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "text/plain"
-						}
-					],
-					"cookie": [],
-					"body": ""
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "price",

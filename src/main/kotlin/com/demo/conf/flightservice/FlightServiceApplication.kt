@@ -105,9 +105,7 @@ class FlightServiceController(val flightRepository: FlightRepository,
     @GetMapping("/search")
     fun search(@RequestParam ori: String,
                @RequestParam dest: String,
-               @RequestParam dep: String) = flightRepository.findAll()
-                                                                        .map { updateDate(it, dep) }
-                                                                        .toList()
+               @RequestParam dep: String) = flightRepository.findAll().map{ updateDate(it, dep) }.toList()
 
     @GetMapping("/price/{flightNumber}")
     fun price(@PathVariable flightNumber: String) = priceRepository.findById(flightNumber)

@@ -13,6 +13,7 @@ $ aws config --profile devoxx
 ## Deploy infrastructure
 
 ```
+$ npm ci
 $ SLACK_URL=YOUR_SLACK_HOOK_URL APP_PWD=YOUR_APP_PASSWORD serverless deploy --aws-profile devoxx
 ```
 
@@ -25,4 +26,4 @@ If necessary, you can deploy your function without redeploying your infrastructu
 ```
 $ SLACK_URL=YOUR_SLACK_HOOK_URL APP_PWD=YOUR_APP_PASSWORD serverless deploy function --function hello --aws-profile devox
 ```
-https://hooks.slack.com/services/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
+_replace `YOUR_SLACK_HOOK_URL` and `YOUR_APP_PASSWORD` accordingly._
