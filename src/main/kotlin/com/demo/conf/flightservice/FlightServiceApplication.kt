@@ -138,8 +138,6 @@ class BookingService(val bookingRepository: BookingRepository) {
 
     @Scheduled(fixedRate = 2000)
     fun bookWorker() {
-        println("==== BookingWorker =====")
-
         bookingRepository.findAll()
                 .filter { it.status == "PENDING" }
                 .map { Thread.sleep(2000); it }
