@@ -68,7 +68,7 @@ function buildSlackTable(summary) {
   const backticks = '```';
   const run = summary.run;
   let data = [];
-  let header = '';
+  let header = summary.environment.values.find(o => o.key === 'commit_id').value;
   let title = summary.collection.name;
   if (summary.environment.name) {
     title += ' - ' + summary.environment.name

@@ -220,6 +220,39 @@
 					"body": ""
 				}
 			]
+		},
+		{
+			"name": "save version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e6d0e1fd-c6b0-4b6b-8d94-b9f2e191fbe1",
+						"exec": [
+							"const response = pm.response.json();",
+							"",
+							"pm.environment.set('commit_id', response.git.commit.id);",
+							"pm.environment.set('build_version', response.build.version);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/actuator/info",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"actuator",
+						"info"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
