@@ -21,8 +21,8 @@
 							"    pm.response.to.be.ok;",
 							"});",
 							"",
-							"pm.test('Check flight-service provides 3 flights', () => {",
-							"    pm.expect(pm.response.json().length).to.be.equal(3);",
+							"pm.test('Check flight-service provides 7 flights', () => {",
+							"    pm.expect(pm.response.json().length).to.be.equal(7);",
 							"});"
 						],
 						"type": "text/javascript"

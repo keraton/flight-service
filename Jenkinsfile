@@ -13,6 +13,7 @@ pipeline {
         GCR_PROJECT = 'devoxxbe-2019'
         IMAGE = readMavenPom().getArtifactId()
         VERSION = readMavenPom().getVersion()
+        COMMITID = sh(returnStdout: true, script: 'git rev-parse --short HEAD')
     }
 
     stages {
@@ -96,6 +97,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'SPRING_SECURITY_USER_PASSWORD', usernameVariable: 'SPRING_USER', passwordVariable: 'SPRING_PASS')]) {
                     dir("acceptance") {
                         sh 'npm ci'
+                        sh "npm run check-version-gcp -- --env-var password=${SPRING_PASS} --env-var build_version=${VERSION} --env-var commit_id=${COMMITID}"
                         sh "npm run gcp -- --env-var password=${SPRING_PASS}"
                     }
                 }

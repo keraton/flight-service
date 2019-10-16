@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "4bc36617-0da5-4ed0-a770-359d115439cc",
+		"name": "flight-service-version",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "check version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "90442524-170c-4b7c-9a29-c4d3f4bf5276",
+						"exec": [
+							"const commit = pm.environment.get(\"commit_id\");",
+							"const version = pm.environment.get(\"build_version\");",
+							"const response = pm.response.json();",
+							"",
+							"pm.test('check commit is ' + commit, () => {",
+							"    pm.expect(response.git.commit.id).to.be.equal(commit);",
+							"});",
+							"",
+							"pm.test('check build version is ' + version, () => {",
+							"    pm.expect(response.build.version).to.be.equal(version);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/actuator/info",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"actuator",
+						"info"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{username}}",
+				"type": "string"
+			}
+		]
+	},
+	"protocolProfileBehavior": {}
+}
