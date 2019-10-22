@@ -98,7 +98,6 @@ pipeline {
                     dir("acceptance") {
                         sh 'npm ci'
                         sh "npm run check-version-gcp -- --env-var password=${SPRING_PASS} --env-var build_version=${VERSION} --env-var commit_id=${COMMITID}"
-                        sh "npm run gcp -- --env-var password=${SPRING_PASS}"
                     }
                 }
             }

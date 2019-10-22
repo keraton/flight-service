@@ -11,8 +11,6 @@ class FlightServiceApplicationTests {
 
 	@Test
 	fun contextLoads() {
-		println("Hello")
 	}
-
 
 }
