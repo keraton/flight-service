@@ -17,7 +17,7 @@ pipeline {
     }
 
     stages {
-        stage('Build flight-service') {
+        stage('Build') {
             agent {
                 docker {
                     image 'openjdk:8-jdk-alpine'
@@ -32,7 +32,7 @@ pipeline {
                 }
             }
         }
-        stage('Build docker image') {
+        stage('Package') {
             steps {
                 sh """
                     docker build -t ${IMAGE} --build-arg JAR_FILE=target/${IMAGE}-${VERSION}.jar .
@@ -41,12 +41,12 @@ pipeline {
                 """
             }
         }
-        stage('Test image') {
+        stage('Acceptance') {
             steps {
                     script {
                             docker.image("${IMAGE}").withRun('-e "SPRING_PROFILES_ACTIVE=dev"') { c ->
                                 docker.image('node:10.16.3-alpine').inside("--network container:${c.id}") {
-                                    dir("acceptance") { 
+                                    dir("acceptance") {
                                         sh 'while ! nc -z localhost 8080 ; do sleep 2 ; done'
                                         sh 'npm ci'
                                         sh 'npm run local'
@@ -64,42 +64,9 @@ pipeline {
                     }
             }
         }
-        stage('Push to GCR') {
+        stage('Deploy') {
             steps {
-                withDockerRegistry([ url: "https://${GCR_HOSTNAME}", credentialsId: "gcr:${GCR_PROJECT}"]) {
-                    sh """
-                        docker push ${GCR_HOSTNAME}/${GCR_PROJECT}/${IMAGE}:${VERSION}
-                        docker push ${GCR_HOSTNAME}/${GCR_PROJECT}/${IMAGE}
-                    """
-                }
-            }
-        }
-        stage('Deploy with Cloud Run') {
-            steps {
-                withCredentials([file(credentialsId: 'GCP_KEY_SA', variable: 'GC_KEY'),
-                                 usernamePassword(credentialsId: 'SPRING_SECURITY_USER_PASSWORD', usernameVariable: 'SPRING_USER', passwordVariable: 'SPRING_PASS')
-                ]) {
-                    sh "gcloud auth activate-service-account --key-file=${GC_KEY}"
-                    sh "gcloud beta run deploy flight-service \
-                            --image ${GCR_HOSTNAME}/${GCR_PROJECT}/${IMAGE} \
-                            --update-env-vars SPRING_SECURITY_USER_PASSWORD=${SPRING_PASS} \
-                            --project ${GCR_PROJECT} --platform managed --region europe-west1"
-                }
-            }
-        }
-        stage('Validate Prod') {
-            agent {
-                docker {
-                    image 'node:10.16.3-alpine'
-                }
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'SPRING_SECURITY_USER_PASSWORD', usernameVariable: 'SPRING_USER', passwordVariable: 'SPRING_PASS')]) {
-                    dir("acceptance") {
-                        sh 'npm ci'
-                        sh "npm run check-version-gcp -- --env-var password=${SPRING_PASS} --env-var build_version=${VERSION} --env-var commit_id=${COMMITID}"
-                    }
-                }
+                echo 'deploying application to prod...'
             }
         }
     }
